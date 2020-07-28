@@ -6,6 +6,7 @@ import { match } from 'react-router';
 import { NavHashLink, NavHashLinkProps } from 'react-router-hash-link';
 import * as Stickyfill from 'stickyfilljs';
 
+import { history } from '../../src/store';
 import '../components/SideNav.scss';
 
 export interface ISideNavEntryProps extends NavHashLinkProps {
@@ -65,17 +66,30 @@ export class SideNavEntry extends React.Component<ISideNavEntryProps> {
     return false;
   }; // tslint:disable-line: semicolon
 
+  public navHashLinkIsExact = (to: any): boolean => {
+    if (to.startsWith('#')) {
+      // On a hash link match to just the hash because pathname isn't present
+      return to === history.location.hash;
+    } else {
+      // On a regular link match to the full pathname and hash to
+      // precent parent links from getting aria-current="page"
+      return to === history.location.pathname + history.location.hash;
+    }
+  };
+
   public render() {
     // Omit unneeded parent props from NavLink
-    const { name, className, subNavLevel, ... navLinkProps } = this.props;
+    const { name, className, subNavLevel, ...navLinkProps } = this.props;
 
     return (
-      <li className={classNames(
-        'va-api-sidenav-entry',
-        'vads-u-border-top--2px',
-        'vads-u-border-color--gray-lighter',
-        'vads-u-margin-y--0',
-      )}>
+      <li
+        className={classNames(
+          'va-api-sidenav-entry',
+          'vads-u-border-top--2px',
+          'vads-u-border-color--gray-lighter',
+          'vads-u-margin-y--0',
+        )}
+      >
         <NavHashLink
           className={classNames(
             'vads-u-padding--1p5',
@@ -86,24 +100,27 @@ export class SideNavEntry extends React.Component<ISideNavEntryProps> {
             },
             this.props.className,
           )}
-          activeClassName={classNames(
-            'va-api-active-sidenav-link',
-            'vads-u-font-weight--bold',
-            {
-              'vads-u-border-color--cool-blue': subNavLevel === 0,
-              'vads-u-border-left--5px': subNavLevel === 0,
-            },
-          )}
+          activeClassName={classNames('va-api-active-sidenav-link', 'vads-u-font-weight--bold', {
+            'vads-u-border-color--cool-blue': subNavLevel === 0,
+            'vads-u-border-left--5px': subNavLevel === 0,
+          })}
           isActive={this.navHashLinkIsActive}
+          aria-current={this.navHashLinkIsExact(this.props.to) ? 'page' : 'false'}
           {...navLinkProps}
         >
           {this.props.name}
         </NavHashLink>
-        {this.props.children && 
-          <ul className={classNames('va-api-sidenav-sub-list', 'vads-u-margin-y--0', 'vads-u-padding-left--0')}>
+        {this.props.children && (
+          <ul
+            className={classNames(
+              'va-api-sidenav-sub-list',
+              'vads-u-margin-y--0',
+              'vads-u-padding-left--0',
+            )}
+          >
             {this.props.children}
           </ul>
-        }
+        )}
       </li>
     );
   }
@@ -128,11 +145,13 @@ export default class SideNav extends React.Component<ISideNavProps> {
 
   public render() {
     return (
-      <div className={classNames(
-        'vads-l-col--12',
-        'vads-u-padding-right--5',
-        'medium-screen:vads-l-col--4', 
-      )}>
+      <div
+        className={classNames(
+          'vads-l-col--12',
+          'vads-u-padding-right--5',
+          'medium-screen:vads-l-col--4',
+        )}
+      >
         <nav
           className={classNames(
             'va-api-side-nav',
@@ -143,15 +162,17 @@ export default class SideNav extends React.Component<ISideNavProps> {
           aria-label={this.props.ariaLabel}
           ref={this.navRef}
         >
-          <ul className={classNames(
-            'usa-sidenav-list',
-            'va-api-sidenav-list',
-            'vads-u-background-color--white',
-            'vads-u-border-bottom--2px',
-            'vads-u-border-left--2px',
-            'vads-u-border-right--2px',
-            'vads-u-border-color--gray-lighter',
-          )}>
+          <ul
+            className={classNames(
+              'usa-sidenav-list',
+              'va-api-sidenav-list',
+              'vads-u-background-color--white',
+              'vads-u-border-bottom--2px',
+              'vads-u-border-left--2px',
+              'vads-u-border-right--2px',
+              'vads-u-border-color--gray-lighter',
+            )}
+          >
             {this.props.children}
           </ul>
         </nav>
