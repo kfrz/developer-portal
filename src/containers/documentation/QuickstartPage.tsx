@@ -4,6 +4,7 @@ import { Redirect, RouteComponentProps } from 'react-router';
 
 import { getApiDefinitions } from '../../apiDefs/query';
 import QuickstartWrapper from '../../components/QuickstartWrapper';
+import { history } from '../../store';
 import { IApiNameParam } from '../../types';
 
 export default class QuickstartPage extends React.Component<
@@ -16,10 +17,10 @@ export default class QuickstartPage extends React.Component<
     this.pageHeader = React.createRef();
   }
   public componentDidMount() {
-    const element = this.pageHeader!.current;
-    setTimeout(() => {
-      element!.focus();
-    }, 0);
+    this.setPageFocus();
+  }
+  public componentDidUpdate() {
+    this.setPageFocus();
   }
   public render() {
     const { apiCategoryKey } = this.props.match.params;
@@ -38,6 +39,14 @@ export default class QuickstartPage extends React.Component<
       );
     } else {
       return <Redirect to={`/explore/${apiCategoryKey}`} />;
+    }
+  }
+  protected setPageFocus() {
+    if (!history.location.hash) {
+      const element = this.pageHeader!.current;
+      setTimeout(() => {
+        element!.focus();
+      }, 0);
     }
   }
 }

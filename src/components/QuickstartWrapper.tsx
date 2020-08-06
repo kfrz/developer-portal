@@ -16,7 +16,6 @@ export default function Quickstart(props: IQuickstartWrapperProps) {
         id="api-documentation"
         halo={halo}
         header="Quickstart"
-        tabIndex={-1}
         forwardedRef={props.forwardedRef}
       />
       {quickstartContent({})}

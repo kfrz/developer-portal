@@ -9,7 +9,6 @@ interface IPageHeaderProps {
   halo?: string;
   header: string;
   id?: string;
-  tabIndex?: number;
   forwardedRef?: React.RefObject<HTMLDivElement>;
 }
 
@@ -17,7 +16,7 @@ export default class PageHeader extends React.Component<IPageHeaderProps, {}> {
   public render() {
     const { forwardedRef } = this.props;
     return (
-      <div className={this.props.className} tabIndex={this.props.tabIndex} ref={forwardedRef}>
+      <div className={this.props.className} tabIndex={-1} ref={forwardedRef}>
         {this.props.halo && (
           <div className={classNames('header-halo', 'vads-u-color--gray')}>{this.props.halo}</div>
         )}

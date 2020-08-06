@@ -20,16 +20,10 @@ export default class CategoryPage extends React.Component<RouteComponentProps<IA
     this.pageHeader = React.createRef();
   }
   public componentDidMount() {
-    const element = this.pageHeader!.current;
-    element!.focus();
+    this.setPageFocus();
   }
   public componentDidUpdate() {
-    if (!history.location.hash) {
-      const element = this.pageHeader!.current;
-      setTimeout(() => {
-        element!.focus();
-      }, 0);
-    }
+    this.setPageFocus();
   }
   public render() {
     const { apiCategoryKey } = this.props.match.params;
@@ -80,17 +74,20 @@ export default class CategoryPage extends React.Component<RouteComponentProps<IA
 
     return (
       <section role="region" aria-labelledby={headerId} className="va-api-api-overview">
-        <PageHeader
-          id={headerId}
-          header={categoryName}
-          tabIndex={-1}
-          forwardedRef={this.pageHeader}
-        />
+        <PageHeader id={headerId} header={categoryName} forwardedRef={this.pageHeader} />
         {intro({})}
         {cardSection}
         <div className="vads-u-width--full">{overview({})}</div>
         <hr />
       </section>
     );
+  }
+  protected setPageFocus() {
+    if (!history.location.hash) {
+      const element = this.pageHeader!.current;
+      setTimeout(() => {
+        element!.focus();
+      }, 0);
+    }
   }
 }

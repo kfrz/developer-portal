@@ -36,16 +36,10 @@ export default class CategoryReleaseNotesPage extends React.Component<
     this.pageHeader = React.createRef();
   }
   public componentDidMount() {
-    const element = this.pageHeader!.current;
-    element!.focus();
+    this.setPageFocus();
   }
   public componentDidUpdate() {
-    if (!history.location.hash) {
-      const element = this.pageHeader!.current;
-      setTimeout(() => {
-        element!.focus();
-      }, 0);
-    }
+    this.setPageFocus();
   }
 
   public render() {
@@ -91,7 +85,6 @@ export default class CategoryReleaseNotesPage extends React.Component<
           halo={apiDefs[apiCategoryKey].name}
           header="Release Notes"
           id={`${apiCategoryKey}-release-notes`}
-          tabIndex={-1}
           forwardedRef={this.pageHeader}
         />
         {cardSection}
@@ -102,5 +95,13 @@ export default class CategoryReleaseNotesPage extends React.Component<
         </div>
       </section>
     );
+  }
+  protected setPageFocus() {
+    if (!history.location.hash) {
+      const element = this.pageHeader!.current;
+      setTimeout(() => {
+        element!.focus();
+      }, 0);
+    }
   }
 }

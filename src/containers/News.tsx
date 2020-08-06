@@ -7,6 +7,7 @@ import HoverImage from '../components/HoverImage';
 import PageHeader from '../components/PageHeader';
 import SideNav, { SideNavEntry } from '../components/SideNav';
 import * as NewsData from '../content/news.yml';
+import { history } from '../store';
 import { defaultFlexContainer } from '../styles/vadsUtils';
 import toHtmlId from '../toHtmlId';
 
@@ -33,11 +34,11 @@ const sections = NewsData.sections.map((section: ISection) => ({
   id: toHtmlId(section.title),
 }));
 
-function NewsItem({item, media} : {item: INewsItem, media: boolean}) {
+function NewsItem({ item, media }: { item: INewsItem; media: boolean }) {
   return media ? <MediaItem item={item} /> : <ItemDescription item={item} />;
 }
 
-function MediaItem({item} : {item: INewsItem}) {
+function MediaItem({ item }: { item: INewsItem }) {
   const description = <ItemDescription item={item} />;
   if (item.url.includes('www.youtube.com')) {
     return (
@@ -58,14 +59,12 @@ function MediaItem({item} : {item: INewsItem}) {
           />
         </a>
       </div>
-      <div className="vads-u-margin-left--2p5 va-api-media-row-description">
-        {description}
-      </div>
+      <div className="vads-u-margin-left--2p5 va-api-media-row-description">{description}</div>
     </div>
   );
 }
 
-function ItemDescription({item}: {item: INewsItem}) {
+function ItemDescription({ item }: { item: INewsItem }) {
   return (
     <p>
       <a href={item.url}>{item.title}</a>
@@ -79,6 +78,7 @@ function ItemDescription({item}: {item: INewsItem}) {
 }
 
 export default class News extends React.Component {
+  public pageHeader: React.RefObject<HTMLDivElement>;
   private cardsSections = sections.map((section: INewsSection) => {
     return (
       <CardLink key={section.id} url={`#${section.id}`} name={section.title}>
@@ -86,6 +86,17 @@ export default class News extends React.Component {
       </CardLink>
     );
   });
+
+  constructor(props: any) {
+    super(props);
+    this.pageHeader = React.createRef();
+  }
+  public componentDidMount() {
+    this.setPageFocus();
+  }
+  public componentDidUpdate() {
+    this.setPageFocus();
+  }
 
   public render() {
     const headerProps = {
@@ -126,6 +137,7 @@ export default class News extends React.Component {
                   description={headerProps.description}
                   header={headerProps.header}
                   className="vads-u-margin-bottom--4"
+                  forwardedRef={this.pageHeader}
                 />
                 <div className={classNames(defaultFlexContainer(), 'vads-u-margin-bottom--4')}>
                   {this.cardsSections}
@@ -137,5 +149,13 @@ export default class News extends React.Component {
         </div>
       </div>
     );
+  }
+  protected setPageFocus() {
+    if (!history.location.hash) {
+      const element = this.pageHeader!.current;
+      setTimeout(() => {
+        element!.focus();
+      }, 0);
+    }
   }
 }
