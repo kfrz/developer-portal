@@ -9,10 +9,28 @@ import AuthorizationCard from '../../components/AuthorizationCard';
 import CardLink from '../../components/CardLink';
 import OnlyTags from '../../components/OnlyTags';
 import PageHeader from '../../components/PageHeader';
+import { history } from '../../store';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { IApiNameParam } from '../../types';
 
 export default class CategoryPage extends React.Component<RouteComponentProps<IApiNameParam>, {}> {
+  public pageHeader: React.RefObject<HTMLDivElement>;
+  constructor(props: RouteComponentProps<IApiNameParam>) {
+    super(props);
+    this.pageHeader = React.createRef();
+  }
+  public componentDidMount() {
+    const element = this.pageHeader!.current;
+    element!.focus();
+  }
+  public componentDidUpdate() {
+    if (!history.location.hash) {
+      const element = this.pageHeader!.current;
+      setTimeout(() => {
+        element!.focus();
+      }, 0);
+    }
+  }
   public render() {
     const { apiCategoryKey } = this.props.match.params;
     const {
@@ -45,7 +63,10 @@ export default class CategoryPage extends React.Component<RouteComponentProps<IA
         );
       });
 
-      const authCard = apis.some(api => !!api.oAuth) && categoryName !== 'Benefits API'  ? <AuthorizationCard categoryKey={apiCategoryKey} /> : null;
+      const authCard =
+        apis.some(api => !!api.oAuth) && categoryName !== 'Benefits API' ? (
+          <AuthorizationCard categoryKey={apiCategoryKey} />
+        ) : null;
 
       cardSection = (
         <div role="navigation" aria-labelledby={headerId}>
@@ -59,7 +80,12 @@ export default class CategoryPage extends React.Component<RouteComponentProps<IA
 
     return (
       <section role="region" aria-labelledby={headerId} className="va-api-api-overview">
-        <PageHeader id={headerId} header={categoryName} />
+        <PageHeader
+          id={headerId}
+          header={categoryName}
+          tabIndex={-1}
+          forwardedRef={this.pageHeader}
+        />
         {intro({})}
         {cardSection}
         <div className="vads-u-width--full">{overview({})}</div>

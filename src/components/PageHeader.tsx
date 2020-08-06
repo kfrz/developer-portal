@@ -10,15 +10,10 @@ interface IPageHeaderProps {
   header: string;
   id?: string;
   tabIndex?: number;
-  forwardedRef?: any;
+  forwardedRef?: React.RefObject<HTMLDivElement>;
 }
 
 export default class PageHeader extends React.Component<IPageHeaderProps, {}> {
-  // public headerRef: any;
-  // constructor(props: IPageHeaderProps) {
-  //   super(props);
-  //   this.headerRef = React.createRef();
-  // }
   public render() {
     const { forwardedRef } = this.props;
     return (

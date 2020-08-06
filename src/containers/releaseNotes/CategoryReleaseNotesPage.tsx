@@ -29,21 +29,21 @@ const ApiReleaseNote = ({ api }: { api: IApiDescription }) => {
 export default class CategoryReleaseNotesPage extends React.Component<
   RouteComponentProps<IApiNameParam>
 > {
-  public headerElement: any;
+  public pageHeader: React.RefObject<HTMLDivElement>;
 
   constructor(props: RouteComponentProps<IApiNameParam>) {
     super(props);
-    this.headerElement = React.createRef();
+    this.pageHeader = React.createRef();
   }
   public componentDidMount() {
-    const element = this.headerElement!.current;
-    element.focus();
+    const element = this.pageHeader!.current;
+    element!.focus();
   }
   public componentDidUpdate() {
     if (!history.location.hash) {
-      const element = this.headerElement!.current;
+      const element = this.pageHeader!.current;
       setTimeout(() => {
-        element.focus();
+        element!.focus();
       }, 0);
     }
   }
@@ -92,7 +92,7 @@ export default class CategoryReleaseNotesPage extends React.Component<
           header="Release Notes"
           id={`${apiCategoryKey}-release-notes`}
           tabIndex={-1}
-          forwardedRef={this.headerElement}
+          forwardedRef={this.pageHeader}
         />
         {cardSection}
         <div className={classNames('vads-u-width--full', 'vads-u-margin-top--4')}>
