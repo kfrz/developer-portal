@@ -112,6 +112,7 @@ export default class News extends React.Component {
           key={section.id}
           id={section.id}
           className="vads-u-margin-bottom--4"
+          tabIndex={-1}
         >
           <h2>{section.title}</h2>
           {section.items.map((item: INewsItem) => {
@@ -153,6 +154,11 @@ export default class News extends React.Component {
   protected setPageFocus() {
     if (!history.location.hash) {
       const element = this.pageHeader!.current;
+      setTimeout(() => {
+        element!.focus();
+      }, 0);
+    } else {
+      const element = document.getElementById(history.location.hash.replace('#', ''));
       setTimeout(() => {
         element!.focus();
       }, 0);

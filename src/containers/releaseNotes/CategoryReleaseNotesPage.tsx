@@ -17,7 +17,7 @@ const ApiReleaseNote = ({ api }: { api: IApiDescription }) => {
   const dashUrlFragment = api.urlFragment.replace('_', '-');
   return (
     <Flag name={`hosted_apis.${api.urlFragment}`}>
-      <div id={dashUrlFragment}>
+      <div id={dashUrlFragment} tabIndex={-1}>
         <h2>{api.name}</h2>
         {api.releaseNotes({})}
         <hr />
@@ -99,6 +99,11 @@ export default class CategoryReleaseNotesPage extends React.Component<
   protected setPageFocus() {
     if (!history.location.hash) {
       const element = this.pageHeader!.current;
+      setTimeout(() => {
+        element!.focus();
+      }, 0);
+    } else {
+      const element = document.getElementById(history.location.hash.replace('#', ''));
       setTimeout(() => {
         element!.focus();
       }, 0);
