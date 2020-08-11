@@ -1,4 +1,4 @@
-## Getting Started
+## Getting Started {tabIndex="-1"}
 
 The VA API Platform uses the [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) standard to allow Veterans to authorize third-party applications to access data on their behalf. The platform also allows some users, such as officers working at Veteran Service Organizations (VSO), to access data on behalf of a Veteran who has granted them approval.
 
@@ -297,7 +297,7 @@ grant_type=refresh_token&refresh_token={your refresh_token}&client_id={client_id
 
 You will receive the same kind of response as above and be able to use your new `access_token` normally.
 
-## Scopes
+## Scopes {tabIndex="-1"}
 
 Scopes define the API endpoint your application is allowed to access. The VA API Platform team will define a maximum set of scopes your application is allowed to request. You can always begin an authorization flow by requesting fewer permissions that your application is allowed to access, which may result in more pleasant experience for users unsure if they should grant your application access to their data. You can then always request additional access to additional data when your application needs additional data for a Veteran or VSO using your application.
 
@@ -315,7 +315,7 @@ Scopes define the API endpoint your application is allowed to access. The VA API
 
 These are subject to change while the VA API Platform OpenID Connect feature is under development.
 
-## ID Token
+## ID Token {tabIndex="-1"}
 Unlike the access token returned by an authorization_code grant, which is simply a random value, an `id_token` is a [JSON Web Token](https://jwt.io) or JWT. A JWT consists of three parts: a header, a payload, and a signature. This provides an extremely brief overview of a JWT. An `id_token` is available in the authorization code flow (response_type = code) token response when the 'openid' scope is used.
 
 ### Header
@@ -339,13 +339,13 @@ The payload also contains claims about the user. Our JWTs will have the followin
 
 The signature is a cryptographically generated signature of the JWT's header and payload used to confirm the JWT's authenticity. Your application must validate this signature using the `alg` and the `kid` from the JWT's header. You may want use one of the JWT libraries listed at [jwt.io](https://jwt.io) to help make this process easier.
 
-## Test Users
+## Test Users {tabIndex="-1"}
 
 While developing and testing your application, you'll need to be able to login. Since most of the data provided from the VA API Platform comes from internal VA systems, you can't sign up for an account and find useful data in it. We provide [test accounts](https://github.com/department-of-veterans-affairs/vets-api-clients/blob/master/test_accounts.md) for you to use while developing your VA API Platform-based application.
 
 Test user data is reset regularly.
 
-## Security Considerations
+## Security Considerations {tabIndex="-1"}
 
 While some security concerns have been noted in this document, there are a few things application developers should take extra care to pay attention to when using VA OAuth.
 
@@ -373,11 +373,11 @@ The [OpenID Connect documentation](https://openid.net/specs/openid-connect-core-
 
 Your application must validate JWT signatures. This allows your application to verify that the provided JWT originates from our authorization servers and prevents your application from accepting a JWT with claims that are attempting to impersonate one of your users.
 
-## Support
+## Support {tabIndex="-1"}
 
 If you have any questions please feel free to reach out to the VA API Platform team at [api@va.gov](mailto:api@va.gov). If you would like to report a bug or make a feature request, please open an issue through our [Support page](https://developer.va.gov/support).
 
-## Sample Applications
+## Sample Applications {tabIndex="-1"}
 
 ### Authorization Code Flow
 

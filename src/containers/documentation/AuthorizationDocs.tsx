@@ -52,6 +52,11 @@ export class AuthorizationDocs extends React.Component<RouteComponentProps<IApiN
       setTimeout(() => {
         element!.focus();
       }, 0);
+    } else {
+      const element = document.getElementById(history.location.hash.replace('#', ''));
+      setTimeout(() => {
+        element!.focus();
+      }, 0);
     }
   }
 }
