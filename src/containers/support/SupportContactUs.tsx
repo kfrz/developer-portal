@@ -47,6 +47,7 @@ export default class SupportContactUs extends React.Component<{}, ISupportContac
     const headerProps = {
       description:
         'You can submit an issue on GitHub (requires an account) or contact us by using the form below. Please provide as much detail as possible. Your concerns and feedback are important to us, and you can expect a reply within one business day.',
+      forwardedRef: this.pageHeader,
       halo: 'Support',
       header: 'Contact Us',
     };
@@ -56,7 +57,7 @@ export default class SupportContactUs extends React.Component<{}, ISupportContac
     } else {
       return (
         <section role="region" aria-label="Support Overview">
-          <PageHeader forwardedRef={this.pageHeader} {...headerProps} />
+          <PageHeader {...headerProps} />
           <GitHubSnippet />
           <SupportContactUsForm onSuccess={this.onSuccess} />
         </section>

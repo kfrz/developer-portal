@@ -2,6 +2,7 @@ import * as React from 'react';
 import CardLink from '../../components/CardLink';
 import PageHeader from '../../components/PageHeader';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
+import { useFocusOnMount } from '../../utils/hooks';
 import { ISection } from './Support';
 
 const headerProps = {
@@ -15,9 +16,11 @@ interface ISupportOverviewProps {
 }
 
 export default function SupportOverview(props: ISupportOverviewProps) {
+  const pageHeader: React.RefObject<HTMLDivElement> = useFocusOnMount();
+
   return (
     <section role="region" aria-label="Support Overview">
-      <PageHeader {...headerProps} />
+      <PageHeader forwardedRef={pageHeader} {...headerProps} />
       <div className={defaultFlexContainer()}>
         {props.sections.map((section: ISection) => {
           return (
