@@ -52,7 +52,7 @@ jobs:
           path: /home/runner/work/developer-portal/developer-portal/test/image_snapshots/__diff_output__/*.png 
   build:
      runs-on: ubuntu-latest
-     needs: [ visual, accessibility, ci]
+     needs: [ visual, accessibility, lint-unit]
      env:
        BUILD_ENV: dev
      steps:
