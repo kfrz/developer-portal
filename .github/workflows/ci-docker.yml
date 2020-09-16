@@ -2,6 +2,7 @@ on:
   push:
 jobs:
   setup:
+    runs-on: ubuntu-latest
     steps:
       - name: Build container
         run: docker build -t devportal .
