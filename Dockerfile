@@ -1,6 +1,6 @@
 # based on https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#running-puppeteer-in-docker
 
-FROM node:12
+FROM node:12 as base
 
 # Install chromium dependencies
 RUN apt-get update && apt-get install -y libxss1 libxtst6 wget --no-install-recommends \
@@ -32,4 +32,11 @@ COPY package.json package-lock.json ./
 
 RUN npm install
 
+
+FROM duganthva/devportal-ci:latest as ci
 COPY . .
+RUN npm install
+
+FROM base as local
+COPY . .
+
