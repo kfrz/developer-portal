@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build container
-        run: docker build --target ci -t devportal .
+        run: docker build -f .github/workflows/Dockerfile -t devportal .
       - name: Image prohibit
         run: ./prohibit_image_files.sh origin/master HEAD 
       - name: run audit
@@ -22,7 +22,7 @@ jobs:
      steps:
       - uses: actions/checkout@v2
       - name: Build container
-        run: docker build --target ci -t devportal .
+        run: docker build -f .github/workflows/Dockerfile -t devportal .
       - name: run accessibility
         run: docker run --name accessibility -t devportal npm run-script test:accessibility:ci
   visual:
@@ -32,7 +32,7 @@ jobs:
       - name: git-lfs
         run: git lfs pull
       - name: Build container
-        run: docker build --target ci -t devportal .
+        run: docker build -f .github/workflows/Dockerfile -t devportal .
       - name: run visual
         run: docker run --name visual devportal npm run test:visual
   #     - name: upload fails
@@ -49,7 +49,7 @@ jobs:
      steps:
       - uses: actions/checkout@v2
       - name: Build container
-        run: docker build --target ci -t devportal .
+        run: docker build -f .github/workflows/Dockerfile -t devportal .
       - name: build
         run: docker run --name build -t devportal npm run-script build $BUILD_ENV
       - name: cp

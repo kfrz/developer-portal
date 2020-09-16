@@ -32,11 +32,6 @@ COPY package.json package-lock.json ./
 
 RUN npm install
 
-
-FROM duganthva/devportal-ci:latest as ci
-COPY . .
-RUN npm install
-
 FROM base as local
 COPY . .
 
