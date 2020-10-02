@@ -45,8 +45,8 @@ phases:
   build:
     commands:
       # Validate environments
-      allowed_environments="dev staging production"
-      - | 
+      - allowed_environments="dev staging production"
+      - |
         for env in ${ENVIRONMENTS}; do
           if  [[ ! ${allowed_environments} == *${env}* ]]; then
             echo "${env} is not deployable"
@@ -54,10 +54,10 @@ phases:
           fi
         done
       # Production deploys will require a MR number be set. This MR will not be check for validity but will serve as small safety measure for production deploys and reminder to enforce the process.
-      - | 
-        if [[ ${ENVIRONMENTS} == *"production"* ]] && [[ ! ${MR} ]]; then 
-          echo "production deployments need a maintenance request prior to deployment!" 
-          exit 1 
+      - |
+        if [[ ${ENVIRONMENTS} == *"production"* ]] && [[ ! ${MR} ]]; then
+          echo "production deployments need a maintenance request prior to deployment!"
+          exit 1
         fi
       # Set release to latest if release and commit hash is not set.
       - | 
