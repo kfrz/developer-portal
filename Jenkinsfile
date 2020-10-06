@@ -238,8 +238,6 @@ node('vetsgov-general-purpose') {
             "[${it - 'visual-regression-test-ts-visual-regression-test-'}](https://s3-us-gov-west-1.amazonaws.com/${bucket}/${ref}/${it})"
           }.join(' <br>')
           docsLink = 'https://github.com/department-of-veterans-affairs/developer-portal/blob/master/docs/testing.md#visual-regression-testing'
-          comment = "Visual regression testing failed. Review these diffs and then [update the snapshots](${docsLink}). <br><br> ${links}"
-          pullRequestComment(comment)
         }
       }
       notify()
@@ -300,7 +298,6 @@ node('vetsgov-general-purpose') {
       if (prNum) {
         // Deploy to review bucket
         sh "aws --region us-gov-west-1 s3 sync --no-progress --acl public-read ./build/ s3://${reviewBucketPath()}/"
-        commentAfterDeploy()
       } else {
         if (env.BRANCH_NAME == devBranch) {
           build job: 'deploys/developer-portal-dev', parameters: [

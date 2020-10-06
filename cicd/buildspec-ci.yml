@@ -122,7 +122,7 @@ phases:
           for env in ${ENVIRONMENTS}; do
             time="${time}\n${phase}-${env} - $(date +%r) - started"
             tar -C build/${env} -cf build/${env}.tar.bz2 .
-            aws s3 cp --no-progress --acl public-read build/${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/cb-${COMMIT_HASH}/developer-portal-${env}.tar.bz2
+            aws s3 cp --no-progress --acl public-read build/${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/${COMMIT_HASH}/developer-portal-${env}.tar.bz2
           done
         fi
       # Check if we deploy to the review bucket
@@ -139,10 +139,10 @@ phases:
         fi
       # Call the release job if this is running on master branch.
       - phase=release
-      # - |
-      #   if [[ ${BRANCH} == 'master' ]]; then
-      #     aws codebuild start-build --project-name developer-portal-release --source-version ${CODEBUILD_RESOLVED_SOURCE_VERSION}
-      #   fi
+      - |
+         if [[ ${BRANCH} == 'master' ]]; then
+           aws codebuild start-build --project-name developer-portal-release --source-version ${CODEBUILD_RESOLVED_SOURCE_VERSION}
+         fi
       - phase=success
   post_build:
     commands:
@@ -178,8 +178,8 @@ phases:
         esac
       # Output build times
       - printf '%b\n' "${time}"
-      # Handle comments.
-      # - |
-      #   if [[ ${PR_NUM} ]]; then
-      #     prcomment.sh ${REPO} ${PR_NUM} "${comment:-"CI Job has finished without comment."}"
-      #  fi
+      Handle comments.
+      - |
+        if [[ ${PR_NUM} ]]; then
+          prcomment.sh ${REPO} ${PR_NUM} "${comment:-"CI Job has finished without comment."}"
+        fi
