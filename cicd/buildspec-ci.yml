@@ -43,7 +43,7 @@ env:
   parameter-store:
     GITHUB_TOKEN: "/dvp/devops/va_bot_github_token"
 # This webhook currently targets DSVA workspace #lighthous-deploys channel
-    SLACK_WEBHOOK: "/dvp/devops/codebuild_slack_webhook"
+    SLACK_WEBHOOK: "/dvp/devops/codebuild_slack_webhook_lighthouse"
 phases:
   install:
     commands:
@@ -170,6 +170,7 @@ phases:
           ;;
         success)
             echo Everything went according to plan no output necessary....
+            slackpost.sh "Testing" 
           ;;
         *)
           comment="An unhandled error occured with the build process. This is most likely a failure with the build pipeline. A post has been made in Slack"
