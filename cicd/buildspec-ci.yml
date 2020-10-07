@@ -166,15 +166,15 @@ phases:
           comment="There was an error during the ${phase} test. View your ${link} for more information."
           ;;
         build)
-          slackpost.sh "developer-portal ${BRANCH} branch CI failed." 
+          slackpost.sh -t failure "developer-portal ${BRANCH} branch CI failed." 
           ;;
         success)
             echo Everything went according to plan no output necessary....
-            slackpost.sh "Testing" 
+            slackpost.sh -t success "${BRANCH} CI for ${COMMIT_HASH}"
           ;;
         *)
           comment="An unhandled error occured with the build process. This is most likely a failure with the build pipeline. A post has been made in Slack"
-          slackpost.sh "Pipeline failure for the developer portal" 
+          slackpost.sh -t failure "Pipeline failure for the developer portal" 
           ;;
         esac
       # Output build times
