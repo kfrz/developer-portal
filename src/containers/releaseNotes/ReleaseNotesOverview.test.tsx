@@ -10,8 +10,8 @@ import { APICategories, APIDescription } from '../../apiDefs/schema';
 import { getFlags } from '../../App';
 import ReleaseNotesOverview from './ReleaseNotesOverview';
 
-function renderComponent() {
-  cleanup();
+const renderComponent = async () => {
+  await cleanup(); // clean up beforeEach render if we're testing a different page
   render(
     <FlagsProvider flags={getFlags()}>
       <MemoryRouter>
@@ -19,7 +19,7 @@ function renderComponent() {
       </MemoryRouter>
     </FlagsProvider>,
   );
-}
+};
 
 describe('ReleaseNotesOverview', () => {
   let apiDefsSpy: jest.SpyInstance<APICategories>;
@@ -37,7 +37,7 @@ describe('ReleaseNotesOverview', () => {
     const heading1 = screen.getByRole('heading', { name: 'Release Notes' });
     expect(heading1).toBeInTheDocument();
     expect(heading1.previousElementSibling).not.toBeNull();
-    expect(heading1.previousElementSibling!).toHaveTextContent('Overview');
+    expect(heading1.previousElementSibling).toHaveTextContent('Overview');
   });
 
   it('renders the contact us link', () => {
@@ -61,7 +61,7 @@ describe('ReleaseNotesOverview', () => {
       expect(cardLink.getAttribute('href')).toBe('/release-notes/sports');
     });
 
-    it('does not render a card for a disabled category', () => {
+    it('does not render a card for a disabled category', async () => {
       const sportsAPIs = fakeCategories.sports.apis.map(
         (api: APIDescription): APIDescription => ({
           ...api,
@@ -77,7 +77,7 @@ describe('ReleaseNotesOverview', () => {
         },
       });
 
-      renderComponent();
+      await renderComponent();
       expect(
         screen.queryByRole('link', {
           name: `Sports API ${fakeCategories.sports.content.shortDescription}`,
@@ -95,11 +95,10 @@ describe('ReleaseNotesOverview', () => {
       expect(cardLink.getAttribute('href')).toBe('/release-notes/deactivated');
     });
 
-    it('does not have a card link for deactivated APIs if there are none', () => {
+    it('does not have a card link for deactivated APIs if there are none', async () => {
       const apis = fakeAPIs.map(api => ({ ...api, deactivationInfo: undefined }));
       allAPIsSpy.mockReturnValue(apis);
-
-      renderComponent();
+      await renderComponent();
 
       expect(
         screen.queryByRole('link', {
