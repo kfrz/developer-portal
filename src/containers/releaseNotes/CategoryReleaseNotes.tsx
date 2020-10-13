@@ -12,7 +12,7 @@ import { OnlyTags } from '../../components';
 import CardLink from '../../components/CardLink';
 import PageHeader from '../../components/PageHeader';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
-import { IApiNameParam } from '../../types';
+import { APINameParam } from '../../types';
 
 interface ReleaseNotesCardLinksProps {
   categoryKey: string;
@@ -108,7 +108,7 @@ const ReleaseNotesCollection = (props: ReleaseNotesCollectionProps) => (
   </section>
 );
 
-export const CategoryReleaseNotes = (props: RouteComponentProps<IApiNameParam>): JSX.Element => {
+export const CategoryReleaseNotes = (props: RouteComponentProps<APINameParam>): JSX.Element => {
   const { apiCategoryKey } = props.match.params;
   const categoryDefinition = getApiDefinitions()[apiCategoryKey];
   return (
