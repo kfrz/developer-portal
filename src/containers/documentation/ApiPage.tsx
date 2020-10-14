@@ -12,6 +12,7 @@ import ExplorePage from '../../content/explorePage.mdx';
 import { APINameParam } from '../../types';
 import { PAGE_HEADER_ID } from '../../types/constants';
 import ApiDocumentation from './ApiDocumentation';
+import EndpointNotFoundPage from './EndpointNotFoundPage';
 
 const DeactivationMessage = ({ api }: { api: APIDescription }) => {
   const isDeprecated = isApiDeprecated(api);
@@ -25,7 +26,7 @@ const DeactivationMessage = ({ api }: { api: APIDescription }) => {
     ? (api.deactivationInfo?.deactivationContent || (() => 'Deactived API'))
     : (api.deactivationInfo?.deprecationContent || (() => 'Deprecated API'));
   return (
-    <div className={classNames('usa-alert', 'usa-alert-info', 'va-api-deprecation-alert')}>
+    <div className={classNames('usa-alert', 'usa-alert-info', 'va-api-alert-box')}>
       <div className={classNames('usa-alert-body')}>{content({})}</div>
     </div>
   );
@@ -44,7 +45,7 @@ const ApiPage = (props: RouteComponentProps<APINameParam>): JSX.Element => {
 
   const api = getApi(params.apiName);
   if (api === null) {
-    return <ExplorePage />;
+    return <EndpointNotFoundPage {...props} />;
   }
 
   const category = lookupApiCategory(params.apiCategoryKey);
