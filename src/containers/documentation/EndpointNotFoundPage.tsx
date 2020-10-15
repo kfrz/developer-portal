@@ -9,6 +9,7 @@ import { APINameParam } from '../../types';
 import { PAGE_HEADER_ID } from '../../types/constants';
 import { Link } from 'react-router-dom';
 import { APIDescription } from 'src/apiDefs/schema';
+import { now } from 'lodash';
 
 const EndpointNotFoundPage = (props: RouteComponentProps<APINameParam>): JSX.Element => {
   const { params } = props.match;
@@ -25,13 +26,18 @@ const EndpointNotFoundPage = (props: RouteComponentProps<APINameParam>): JSX.Ele
       />
       <PageHeader header={category!.name} />
       <ul>
-        {category?.apis.map((item: APIDescription) => (
-          <li>
-            <Link to={`/explore/${params.apiCategoryKey}/docs/${item.urlFragment}`}>
-              {item.name}
-            </Link>
-          </li>
-        ))}
+        {category?.apis
+          .filter((item: APIDescription) => {
+            return !item.deactivationInfo || item.deactivationInfo.deactivationDate.isAfter(now());
+          })
+          .map((item: APIDescription) => (
+            <li key={item.urlFragment}>
+              <Link to={`/explore/${params.apiCategoryKey}/docs/${item.urlFragment}`}>
+                {item.name}
+              </Link>
+            </li>
+          ))
+        }
       </ul>
     </div>
   );
