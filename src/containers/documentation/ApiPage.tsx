@@ -44,7 +44,7 @@ const ApiPage = (): JSX.Element => {
 
   const api = getApi(params.apiName);
   if (api === null) {
-    return <EndpointNotFoundPage {...props} />;
+    return <EndpointNotFoundPage />;
   }
 
   const category = lookupApiCategory(params.apiCategoryKey);

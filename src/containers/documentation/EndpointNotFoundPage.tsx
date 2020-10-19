@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import AlertBox from '@department-of-veterans-affairs/formation-react/AlertBox';
-import { RouteComponentProps } from 'react-router';
+import { useParams } from 'react-router';
 
 import { lookupApiCategory } from '../../apiDefs/query';
 import PageHeader from '../../components/PageHeader';
@@ -11,10 +11,9 @@ import { Link } from 'react-router-dom';
 import { APIDescription } from 'src/apiDefs/schema';
 import { now } from 'lodash';
 
-const EndpointNotFoundPage = (props: RouteComponentProps<APINameParam>): JSX.Element => {
-  const { params } = props.match;
-
-  const category = lookupApiCategory(params.apiCategoryKey);
+const EndpointNotFoundPage = (): JSX.Element => {
+  const { apiCategoryKey } = useParams<APINameParam>();
+  const category = lookupApiCategory(apiCategoryKey);
 
   return (
     <div role="region" aria-labelledby={PAGE_HEADER_ID}>
@@ -24,7 +23,9 @@ const EndpointNotFoundPage = (props: RouteComponentProps<APINameParam>): JSX.Ele
         content="Try using the links below or the search bar to find your way forward."
         status="warning"
       />
-      <PageHeader header={category!.name} />
+      {category?.name && (
+        <PageHeader header={category.name} />
+      )}
       <ul>
         {category?.apis
           .filter((item: APIDescription) => {
@@ -32,7 +33,7 @@ const EndpointNotFoundPage = (props: RouteComponentProps<APINameParam>): JSX.Ele
           })
           .map((item: APIDescription) => (
             <li key={item.urlFragment}>
-              <Link to={`/explore/${params.apiCategoryKey}/docs/${item.urlFragment}`}>
+              <Link to={`/explore/${apiCategoryKey}/docs/${item.urlFragment}`}>
                 {item.name}
               </Link>
             </li>
