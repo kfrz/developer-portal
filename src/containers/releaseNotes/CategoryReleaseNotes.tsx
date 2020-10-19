@@ -1,7 +1,7 @@
 import AlertBox from '@department-of-veterans-affairs/formation-react/AlertBox';
 import classNames from 'classnames';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { useParams } from 'react-router';
 
 import { getDeactivatedCategory, isApiDeactivated } from '../../apiDefs/deprecated';
 import { getApiDefinitions } from '../../apiDefs/query';
@@ -62,7 +62,7 @@ const APIReleaseNote = ({
 }: {
   api: APIDescription;
   flagName: 'enabled' | 'hosted_apis';
-}) => {
+}): JSX.Element => {
   const dashUrlFragment = api.urlFragment.replace('_', '-');
 
   return (
@@ -113,8 +113,8 @@ const ReleaseNotesCollection = (props: ReleaseNotesCollectionProps) => (
   </section>
 );
 
-export const CategoryReleaseNotes = (props: RouteComponentProps<APINameParam>): JSX.Element => {
-  const { apiCategoryKey } = props.match.params;
+export const CategoryReleaseNotes = (): JSX.Element => {
+  const { apiCategoryKey } = useParams<APINameParam>();
   const categoryDefinition = getApiDefinitions()[apiCategoryKey];
   return (
     <ReleaseNotesCollection
