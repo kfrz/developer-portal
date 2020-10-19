@@ -39,7 +39,7 @@ export const getDocURL = createSelector(
     if (!versionInfo) {
       return initialDocUrl;
     }
-    return `${process.env.REACT_APP_VETSGOV_SWAGGER_API}${versionInfo.path}`;
+    return `${process.env.REACT_APP_VETSGOV_SWAGGER_API || ''}${versionInfo.path}`;
   },
 );
 
