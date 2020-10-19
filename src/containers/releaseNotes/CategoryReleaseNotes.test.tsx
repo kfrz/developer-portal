@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { cleanup, getByRole, queryByRole, render, screen } from '@testing-library/react';
 import 'jest';
 import * as React from 'react';
-import { MemoryRouter, Route } from 'react-router';
+import { MemoryRouter, Route, Router } from 'react-router';
 import {
   extraAPI,
   extraDeactivationInfo,
@@ -14,6 +14,7 @@ import * as apiQueries from '../../apiDefs/query';
 import { APICategories, APIDescription } from '../../apiDefs/schema';
 import { FlagsProvider, getFlags } from '../../flags';
 import { CategoryReleaseNotes, DeactivatedReleaseNotes } from './CategoryReleaseNotes';
+import { createMemoryHistory } from 'history';
 
 describe('ReleaseNotesCollection', () => {
   let apiDefsSpy: jest.SpyInstance<APICategories>;
@@ -143,6 +144,21 @@ describe('ReleaseNotesCollection', () => {
       it('does not include release notes for disabled APIs', () => {
         renderComponent('/release-notes/sports');
         expect(screen.queryByRole('heading', { name: 'Baseball API' })).toBeNull();
+      });
+
+      it("reditect to /release-notes when category isn't found", () => {
+        const history = createMemoryHistory({ initialEntries: ['/release-notes/fakeCategory'] });
+        const { container } = render(
+          <Router history={history}>
+            <Route path="/release-notes" exact={true} render={() => <div>/release-notes</div>} />
+            <Route
+              path="/release-notes/fakeCategory"
+              exact={true}
+              component={CategoryReleaseNotes}
+            />
+          </Router>,
+        );
+        expect(container.innerHTML).toEqual(expect.stringContaining('/release-notes'));
       });
     });
   });
