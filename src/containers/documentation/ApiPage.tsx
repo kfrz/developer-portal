@@ -10,7 +10,7 @@ import { Flag } from '../../flags';
 import { APINameParam } from '../../types';
 import { PAGE_HEADER_ID } from '../../types/constants';
 import ApiDocumentation from './ApiDocumentation';
-import EndpointNotFoundPage from './EndpointNotFoundPage';
+import ApiNotFoundPage from './ApiNotFoundPage';
 
 const DeactivationMessage = ({ api }: { api: APIDescription }) => {
   const isDeprecated = isApiDeprecated(api);
@@ -44,7 +44,7 @@ const ApiPage = (): JSX.Element => {
 
   const api = getApi(params.apiName);
   if (api === null) {
-    return <EndpointNotFoundPage />;
+    return <ApiNotFoundPage />;
   }
 
   const category = lookupApiCategory(params.apiCategoryKey);

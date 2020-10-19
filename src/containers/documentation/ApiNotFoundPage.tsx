@@ -4,14 +4,13 @@ import AlertBox from '@department-of-veterans-affairs/formation-react/AlertBox';
 import { useParams } from 'react-router';
 
 import { lookupApiCategory } from '../../apiDefs/query';
+import { APIDescription } from '../../apiDefs/schema';
 import PageHeader from '../../components/PageHeader';
 import { APINameParam } from '../../types';
 import { PAGE_HEADER_ID } from '../../types/constants';
 import { Link } from 'react-router-dom';
-import { APIDescription } from 'src/apiDefs/schema';
-import { now } from 'lodash';
 
-const EndpointNotFoundPage = (): JSX.Element => {
+const ApiNotFoundPage = (): JSX.Element => {
   const { apiCategoryKey } = useParams<APINameParam>();
   const category = lookupApiCategory(apiCategoryKey);
 
@@ -29,7 +28,8 @@ const EndpointNotFoundPage = (): JSX.Element => {
       <ul>
         {category?.apis
           .filter((item: APIDescription) => {
-            return !item.deactivationInfo || item.deactivationInfo.deactivationDate.isAfter(now());
+            return !item.deactivationInfo ||
+              item.deactivationInfo.deactivationDate.isAfter(Date.now());
           })
           .map((item: APIDescription) => (
             <li key={item.urlFragment}>
@@ -44,6 +44,4 @@ const EndpointNotFoundPage = (): JSX.Element => {
   );
 };
 
-EndpointNotFoundPage.propTypes = {};
-
-export default EndpointNotFoundPage;
+export default ApiNotFoundPage;
