@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { useLocation, useParams } from 'react-router-dom';
+import classNames from 'classnames';
 import { isApiDeactivated, isApiDeprecated } from '../../apiDefs/deprecated';
 import { lookupApiByFragment, lookupApiCategory } from '../../apiDefs/query';
 import { APIDescription } from '../../apiDefs/schema';
@@ -38,8 +38,9 @@ const getApi = (apiName?: string): APIDescription | null => {
   return lookupApiByFragment(apiName);
 };
 
-const ApiPage = (props: RouteComponentProps<APINameParam>): JSX.Element => {
-  const { params } = props.match;
+const ApiPage = (): JSX.Element => {
+  const location = useLocation();
+  const params = useParams<APINameParam>();
 
   const api = getApi(params.apiName);
   if (api === null) {
@@ -57,7 +58,7 @@ const ApiPage = (props: RouteComponentProps<APINameParam>): JSX.Element => {
           <ApiDocumentation
             apiDefinition={api}
             categoryKey={params.apiCategoryKey}
-            location={props.location}
+            location={location}
           />
         )}
       </div>
