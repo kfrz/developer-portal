@@ -3,6 +3,7 @@ import * as React from 'react';
 import AlertBox from '@department-of-veterans-affairs/formation-react/AlertBox';
 import { useParams } from 'react-router';
 
+import { isApiDeactivated } from '../../apiDefs/deprecated';
 import { lookupApiCategory } from '../../apiDefs/query';
 import { APIDescription } from '../../apiDefs/schema';
 import PageHeader from '../../components/PageHeader';
@@ -28,8 +29,7 @@ const ApiNotFoundPage = (): JSX.Element => {
       <ul>
         {category?.apis
           .filter((item: APIDescription) => {
-            return !item.deactivationInfo ||
-              item.deactivationInfo.deactivationDate.isAfter(Date.now());
+            return !isApiDeactivated(item);
           })
           .map((item: APIDescription) => (
             <li key={item.urlFragment}>
