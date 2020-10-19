@@ -9,3 +9,4 @@ export * from './sideNav/SideNav';
 export * from './sideNav/SideNavEntry';
 export * from './form/Form';
 export * from './onlyTags/OnlyTags';
+export * from './mainNavItem/MainNavItem';
